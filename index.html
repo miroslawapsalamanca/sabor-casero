@@ -332,7 +332,8 @@
 
         <div id="out-comidas"></div>
 
-        <div class="extras" id="out-extras">Postre · Agua</div>
+        <div class="extras" id="out-postre">Postre</div>
+        <div class="extras" id="out-agua">Agua</div>
 
         <div class="logo-row">
           <div class="logo-icon">🍴</div>
@@ -418,8 +419,10 @@
       outComidas.appendChild(row);
     });
 
-    document.getElementById('out-extras').textContent =
-      document.getElementById('postre').value + ' · ' + document.getElementById('agua').value;
+    const postreVal = document.getElementById('postre').value.trim();
+    const aguaVal = document.getElementById('agua').value.trim();
+    document.getElementById('out-postre').textContent = 'Postre' + (postreVal !== '' ? ': ' + postreVal : '');
+    document.getElementById('out-agua').textContent = 'Agua' + (aguaVal !== '' ? ': ' + aguaVal : '');
   }
 
   document.querySelectorAll('.panel input, .panel textarea').forEach(el => {
