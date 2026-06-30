@@ -1,0 +1,445 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Kalam:wght@400;700&family=Patrick+Hand&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<style>
+  :root{
+    --board:#23302c;
+    --board-dark:#1a2521;
+    --frame:#cdbfae;
+    --frame-shadow:#8a7560;
+    --chalk-pink:#f2a6c6;
+    --chalk-yellow:#e8d870;
+    --chalk-blue:#8fd0e0;
+    --chalk-white:#f2efe6;
+    --chalk-green:#a8d8a0;
+  }
+
+  *{box-sizing:border-box;}
+
+  .app{
+    display:flex;
+    gap:28px;
+    font-family:'Patrick Hand', sans-serif;
+    color:#2b2b2b;
+    background:transparent;
+    flex-wrap:wrap;
+    align-items:flex-start;
+  }
+
+  /* ---------- FORM PANEL ---------- */
+  .panel{
+    flex:1 1 340px;
+    min-width:300px;
+    background:#fffaf2;
+    border:2px solid #e4d8c5;
+    border-radius:14px;
+    padding:20px 22px 26px;
+  }
+  .panel h2{
+    font-family:'Kalam', cursive;
+    font-size:22px;
+    margin:0 0 4px;
+    color:#5b4636;
+  }
+  .panel .sub{
+    font-size:14px;
+    color:#8a7a68;
+    margin:0 0 18px;
+    font-family: system-ui, sans-serif;
+  }
+  .field{margin-bottom:14px;}
+  .field label{
+    display:block;
+    font-size:13px;
+    font-weight:600;
+    color:#6b5a47;
+    margin-bottom:4px;
+    font-family: system-ui, sans-serif;
+  }
+  .field input, .field textarea{
+    width:100%;
+    border:1.5px solid #ddd0bd;
+    border-radius:8px;
+    padding:8px 10px;
+    font-family: system-ui, sans-serif;
+    font-size:14px;
+    background:#fff;
+    resize:vertical;
+  }
+  .field input:focus, .field textarea:focus{
+    outline:none;
+    border-color:#c79a6b;
+  }
+  .row2{display:flex; gap:10px;}
+  .row2 .field{flex:1;}
+
+  .section-label{
+    font-family:'Kalam', cursive;
+    font-size:16px;
+    color:#a8763f;
+    margin:18px 0 8px;
+    border-bottom:1px dashed #e4d8c5;
+    padding-bottom:4px;
+  }
+
+  .item-block{
+    border:1px solid #eee2d0;
+    border-radius:10px;
+    padding:10px 12px;
+    margin-bottom:10px;
+    background:#fffdf8;
+  }
+  .item-block .field{margin-bottom:10px;}
+
+  .btn{
+    font-family:'Kalam', cursive;
+    font-size:16px;
+    border:none;
+    border-radius:9px;
+    padding:10px 16px;
+    cursor:pointer;
+    transition:transform .08s ease, opacity .15s ease;
+  }
+  .btn:active{transform:scale(0.97);}
+  .btn-secondary{
+    background:#f1e6d6;
+    color:#6b5a47;
+  }
+  .btn-primary{
+    background:#5b7a5e;
+    color:#fff;
+    width:100%;
+    margin-top:18px;
+    font-size:18px;
+    padding:13px 16px;
+  }
+  .btn-primary:hover{opacity:.92;}
+
+  /* ---------- PREVIEW / BOARD ---------- */
+  .preview-wrap{
+    flex:1 1 360px;
+    min-width:320px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+
+  .board-frame{
+    width:100%;
+    max-width:440px;
+    background:
+      linear-gradient(155deg, var(--frame) 0%, var(--frame-shadow) 100%);
+    border-radius:10px;
+    padding:16px;
+    box-shadow:0 10px 30px rgba(0,0,0,.18);
+  }
+
+  .board{
+    background:
+      radial-gradient(ellipse at 30% 20%, rgba(255,255,255,.04), transparent 60%),
+      var(--board);
+    border-radius:4px;
+    padding:26px 22px 22px;
+    min-height:560px;
+    position:relative;
+    font-family:'Kalam', cursive;
+    color:var(--chalk-white);
+    overflow:hidden;
+  }
+  .board::before{
+    content:"";
+    position:absolute; inset:0;
+    background:repeating-linear-gradient(0deg, rgba(255,255,255,.012) 0px, transparent 2px, transparent 4px);
+    pointer-events:none;
+  }
+
+  .board .leaf-row{
+    text-align:center;
+    font-size:13px;
+    color:#9fb09a;
+    opacity:.55;
+    letter-spacing:4px;
+    margin-bottom:2px;
+  }
+
+  .board h1.title{
+    font-family:'Caveat', cursive;
+    font-weight:700;
+    font-size:54px;
+    text-align:center;
+    margin:0 0 10px;
+    color:var(--chalk-white);
+    text-shadow:0 0 1px rgba(255,255,255,.3);
+  }
+
+  .divider{
+    border:none;
+    border-top:2px solid var(--chalk-pink);
+    opacity:.65;
+    margin:6px 0 12px;
+  }
+
+  .board .section-title{
+    font-size:25px;
+    color:var(--chalk-yellow);
+    text-align:center;
+    border:2px solid var(--chalk-pink);
+    border-radius:3px;
+    padding:4px 8px;
+    margin:14px 0 12px;
+    opacity:.95;
+  }
+
+  .board .line{
+    font-size:21px;
+    line-height:1.32;
+    margin:2px 0;
+    color:var(--chalk-white);
+  }
+  .board .line.pink{color:var(--chalk-pink);}
+  .board .line.blue{color:var(--chalk-blue);}
+  .board .line.green{color:var(--chalk-green);}
+
+  .board .menu-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    gap:8px;
+    margin:3px 0;
+  }
+  .board .menu-item .name{
+    font-size:21px;
+    color:var(--chalk-blue);
+    flex:1;
+  }
+  .board .menu-item .price{
+    font-size:23px;
+    color:var(--chalk-pink);
+    white-space:nowrap;
+  }
+
+  .board .extras{
+    font-size:20px;
+    color:var(--chalk-green);
+    margin-top:8px;
+  }
+
+  .board .logo-row{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:10px;
+    margin-top:18px;
+    padding-top:10px;
+  }
+  .board .logo-text{
+    font-family:'Kalam', cursive;
+    font-weight:700;
+    color:var(--chalk-white);
+    font-size:19px;
+    line-height:1.05;
+    text-align:right;
+  }
+  .board .logo-icon{font-size:28px;}
+
+  .hint{
+    font-family: system-ui, sans-serif;
+    font-size:12.5px;
+    color:#9a8c79;
+    margin-top:10px;
+    text-align:center;
+    max-width:380px;
+  }
+
+  @media (max-width:760px){
+    .app{flex-direction:column;}
+  }
+</style>
+
+<div class="app">
+
+  <!-- ===================== FORM PANEL ===================== -->
+  <div class="panel">
+    <h2>Menú del día — Sabor Casero</h2>
+    <p class="sub">Llena los campos y el menú se va actualizando solo. Cuando esté listo, descarga la imagen.</p>
+
+    <div class="row2">
+      <div class="field">
+        <label>Horario desayunos</label>
+        <input id="horDesayuno" value="8:00 a 12:00" />
+      </div>
+      <div class="field">
+        <label>Horario comidas</label>
+        <input id="horComida" value="2:00 a 4:00" />
+      </div>
+    </div>
+
+    <div class="section-label">Desayunos — incluye</div>
+    <div class="field">
+      <input id="incluye1" value="Café o té" />
+    </div>
+    <div class="field">
+      <input id="incluye2" value="Jugo o fruta" />
+    </div>
+
+    <div id="desayunos-list"></div>
+    <button class="btn btn-secondary" id="addDesayuno">+ Agregar paquete de desayuno</button>
+
+    <div class="section-label">Comidas</div>
+    <div class="field">
+      <label>Guarniciones (texto libre)</label>
+      <textarea id="guarniciones" rows="2">Espagueti, arroz, frijoles</textarea>
+    </div>
+
+    <div id="comidas-list"></div>
+    <button class="btn btn-secondary" id="addComida">+ Agregar platillo fuerte</button>
+
+    <div class="section-label">Extras</div>
+    <div class="row2">
+      <div class="field">
+        <label>Postre</label>
+        <input id="postre" value="Postre" />
+      </div>
+      <div class="field">
+        <label>Agua</label>
+        <input id="agua" value="Agua" />
+      </div>
+    </div>
+
+    <button class="btn btn-primary" id="downloadBtn">⬇ Descargar menú de hoy (PNG)</button>
+  </div>
+
+  <!-- ===================== PREVIEW ===================== -->
+  <div class="preview-wrap">
+    <div class="board-frame">
+      <div class="board" id="boardCapture">
+        <div class="leaf-row">~ ~ ~ ~ ~ ~ ~ ~ ~</div>
+        <h1 class="title">Menu</h1>
+        <hr class="divider" />
+
+        <div class="section-title" id="out-desayunoTitulo">DESAYUNOS 8:00 a 12:00</div>
+
+        <div class="line pink" id="out-incluye1">Café o té</div>
+        <div class="line pink" id="out-incluye2">* Jugo o fruta</div>
+
+        <div id="out-desayunos"></div>
+
+        <div class="section-title" id="out-comidaTitulo">COMIDAS 2:00 a 4:00</div>
+
+        <div class="line blue" id="out-guarniciones">Espagueti, arroz, frijoles</div>
+
+        <div id="out-comidas"></div>
+
+        <div class="extras" id="out-extras">Postre · Agua</div>
+
+        <div class="logo-row">
+          <div class="logo-icon">🍴</div>
+          <div class="logo-text">SABOR<br/>CASERO</div>
+        </div>
+      </div>
+    </div>
+    <p class="hint">Esta vista previa es exactamente lo que se descarga. No requiere Canva ni cuenta de pago.</p>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  const desayunosList = document.getElementById('desayunos-list');
+  const comidasList = document.getElementById('comidas-list');
+
+  function makeItemRow(container, defaultName, defaultPrice){
+    const wrap = document.createElement('div');
+    wrap.className = 'item-block';
+    wrap.innerHTML = `
+      <div class="field">
+        <label>Platillo</label>
+        <input class="item-name" value="${defaultName}" />
+      </div>
+      <div class="field">
+        <label>Precio</label>
+        <input class="item-price" value="${defaultPrice}" />
+      </div>
+      <button class="btn btn-secondary remove-btn" style="font-size:12px;padding:5px 10px;">Quitar</button>
+    `;
+    wrap.querySelector('.remove-btn').addEventListener('click', () => {
+      wrap.remove();
+      render();
+    });
+    wrap.querySelectorAll('input').forEach(i => i.addEventListener('input', render));
+    container.appendChild(wrap);
+  }
+
+  document.getElementById('addDesayuno').addEventListener('click', () => {
+    makeItemRow(desayunosList, 'Huevos al gusto o molletes', '$80');
+    render();
+  });
+  document.getElementById('addComida').addEventListener('click', () => {
+    makeItemRow(comidasList, 'Pollo en crema con verduras', '$95');
+    render();
+  });
+
+  // seed with example data matching the chalkboard photo
+  makeItemRow(desayunosList, 'Huevos al gusto o molletes', '$80');
+  makeItemRow(desayunosList, 'Chilaquiles con pollo o huevo', '$95');
+  makeItemRow(comidasList, 'Pollo en crema con verduras o queso en salsa tatemada', '$95');
+
+  function render(){
+    document.getElementById('out-desayunoTitulo').textContent =
+      'DESAYUNOS ' + document.getElementById('horDesayuno').value;
+    document.getElementById('out-comidaTitulo').textContent =
+      'COMIDAS ' + document.getElementById('horComida').value;
+
+    document.getElementById('out-incluye1').textContent =
+      document.getElementById('incluye1').value;
+    document.getElementById('out-incluye2').textContent =
+      '* ' + document.getElementById('incluye2').value;
+
+    document.getElementById('out-guarniciones').textContent =
+      document.getElementById('guarniciones').value;
+
+    const outDesayunos = document.getElementById('out-desayunos');
+    outDesayunos.innerHTML = '';
+    desayunosList.querySelectorAll('.item-block').forEach((block, idx) => {
+      const name = block.querySelector('.item-name').value;
+      const price = block.querySelector('.item-price').value;
+      const row = document.createElement('div');
+      row.className = 'menu-item';
+      row.innerHTML = `<span class="name">Paq ${idx+1}: ${name}</span><span class="price">${price}</span>`;
+      outDesayunos.appendChild(row);
+    });
+
+    const outComidas = document.getElementById('out-comidas');
+    outComidas.innerHTML = '';
+    comidasList.querySelectorAll('.item-block').forEach(block => {
+      const name = block.querySelector('.item-name').value;
+      const price = block.querySelector('.item-price').value;
+      const row = document.createElement('div');
+      row.className = 'menu-item';
+      row.innerHTML = `<span class="name">${name}</span><span class="price">${price}</span>`;
+      outComidas.appendChild(row);
+    });
+
+    document.getElementById('out-extras').textContent =
+      document.getElementById('postre').value + ' · ' + document.getElementById('agua').value;
+  }
+
+  document.querySelectorAll('.panel input, .panel textarea').forEach(el => {
+    el.addEventListener('input', render);
+  });
+
+  document.getElementById('downloadBtn').addEventListener('click', async () => {
+    const node = document.getElementById('boardCapture');
+    const canvas = await html2canvas(node, {scale: 3, backgroundColor: '#23302c'});
+    const link = document.createElement('a');
+    const today = new Date().toISOString().slice(0,10);
+    link.download = `menu-sabor-casero-${today}.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  });
+
+  render();
+})();
+</script>
