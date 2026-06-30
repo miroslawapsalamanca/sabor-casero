@@ -452,6 +452,60 @@
     link.click();
   });
 
+  // ---- GUARDAR Y CARGAR ----
+  function guardar(){
+    const datos = {
+      horDesayuno: document.getElementById('horDesayuno').value,
+      horComida: document.getElementById('horComida').value,
+      incluye1: document.getElementById('incluye1').value,
+      incluye2: document.getElementById('incluye2').value,
+      guarniciones: document.getElementById('guarniciones').value,
+      postre: document.getElementById('postre').value,
+      agua: document.getElementById('agua').value,
+      desayunos: [],
+      comidas: []
+    };
+    desayunosList.querySelectorAll('.item-block').forEach(block => {
+      datos.desayunos.push({
+        name: block.querySelector('.item-name').value,
+        price: block.querySelector('.item-price').value
+      });
+    });
+    comidasList.querySelectorAll('.item-block').forEach(block => {
+      datos.comidas.push({
+        name: block.querySelector('.item-name').value,
+        price: block.querySelector('.item-price').value
+      });
+    });
+    localStorage.setItem('menuSaborCasero', JSON.stringify(datos));
+  }
+
+  function cargar(){
+    const raw = localStorage.getItem('menuSaborCasero');
+    if(!raw) return;
+    const datos = JSON.parse(raw);
+    document.getElementById('horDesayuno').value = datos.horDesayuno || '';
+    document.getElementById('horComida').value = datos.horComida || '';
+    document.getElementById('incluye1').value = datos.incluye1 || '';
+    document.getElementById('incluye2').value = datos.incluye2 || '';
+    document.getElementById('guarniciones').value = datos.guarniciones || '';
+    document.getElementById('postre').value = datos.postre || '';
+    document.getElementById('agua').value = datos.agua || '';
+
+    desayunosList.innerHTML = '';
+    (datos.desayunos || []).forEach(d => makeItemRow(desayunosList, d.name, d.price));
+
+    comidasList.innerHTML = '';
+    (datos.comidas || []).forEach(d => makeItemRow(comidasList, d.name, d.price));
+  }
+
+  // Guardar automático cada vez que haya un cambio
+  document.addEventListener('input', () => { guardar(); });
+  document.addEventListener('click', () => { setTimeout(guardar, 100); });
+
+  // Cargar al abrir la página
+  cargar();
+
   render();
 })();
 </script>
