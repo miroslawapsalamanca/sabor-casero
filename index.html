@@ -427,8 +427,21 @@
   });
 
   document.getElementById('downloadBtn').addEventListener('click', async () => {
-    const node = document.getElementById('boardCapture');
-    const canvas = await html2canvas(node, {scale: 3, backgroundColor: '#23302c'});
+    const original = document.getElementById('boardCapture');
+
+    // Clonamos el menú y lo ponemos con ancho fijo, fuera de pantalla,
+    // para que la imagen salga igual en cualquier celular.
+    const clone = original.cloneNode(true);
+    clone.style.width = '400px';
+    clone.style.position = 'fixed';
+    clone.style.top = '-9999px';
+    clone.style.left = '0';
+    document.body.appendChild(clone);
+
+    const canvas = await html2canvas(clone, {scale: 3, backgroundColor: '#23302c', width: 400});
+
+    document.body.removeChild(clone);
+
     const link = document.createElement('a');
     const today = new Date().toISOString().slice(0,10);
     link.download = `menu-sabor-casero-${today}.png`;
