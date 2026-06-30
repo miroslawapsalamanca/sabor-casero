@@ -370,18 +370,18 @@
   }
 
   document.getElementById('addDesayuno').addEventListener('click', () => {
-    makeItemRow(desayunosList, 'Huevos al gusto o molletes', '$80');
+    makeItemRow(desayunosList, 'Huevos al gusto o molletes', '80');
     render();
   });
   document.getElementById('addComida').addEventListener('click', () => {
-    makeItemRow(comidasList, 'Pollo en crema con verduras', '$95');
+    makeItemRow(comidasList, 'Pollo en crema con verduras', '95');
     render();
   });
 
   // seed with example data matching the chalkboard photo
-  makeItemRow(desayunosList, 'Huevos al gusto o molletes', '$80');
-  makeItemRow(desayunosList, 'Chilaquiles con pollo o huevo', '$95');
-  makeItemRow(comidasList, 'Pollo en crema con verduras o queso en salsa tatemada', '$95');
+  makeItemRow(desayunosList, 'Huevos al gusto o molletes', '80');
+  makeItemRow(desayunosList, 'Chilaquiles con pollo o huevo', '95');
+  makeItemRow(comidasList, 'Pollo en crema con verduras o queso en salsa tatemada', '95');
 
   function render(){
     document.getElementById('out-desayunoTitulo').textContent =
@@ -404,7 +404,7 @@
       const price = block.querySelector('.item-price').value;
       const row = document.createElement('div');
       row.className = 'menu-item';
-      row.innerHTML = `<span class="name">Paq ${idx+1}: ${name}</span><span class="price">${price}</span>`;
+      row.innerHTML = `<span class="name">Paq ${idx+1}: ${name}</span><span class="price">$${price}</span>`;
       outDesayunos.appendChild(row);
     });
 
@@ -415,7 +415,7 @@
       const price = block.querySelector('.item-price').value;
       const row = document.createElement('div');
       row.className = 'menu-item';
-      row.innerHTML = `<span class="name">${name}</span><span class="price">${price}</span>`;
+      row.innerHTML = `<span class="name">${name}</span><span class="price">$${price}</span>`;
       outComidas.appendChild(row);
     });
 
