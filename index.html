@@ -385,9 +385,9 @@
 
   function render(){
     document.getElementById('out-desayunoTitulo').textContent =
-      'DESAYUNOS ' + document.getElementById('horDesayuno').value;
+  'DESAYUNOS COMPLETOS ' + document.getElementById('horDesayuno').value;
     document.getElementById('out-comidaTitulo').textContent =
-      'COMIDAS ' + document.getElementById('horComida').value;
+      'COMIDAS COMPLETAS ' + document.getElementById('horComida').value;
 
     document.getElementById('out-incluye1').textContent =
       document.getElementById('incluye1').value;
@@ -404,7 +404,7 @@
       const price = block.querySelector('.item-price').value;
       const row = document.createElement('div');
       row.className = 'menu-item';
-      row.innerHTML = `<span class="name">Paq ${idx+1}: ${name}</span><span class="price">$${price}</span>`;
+      row.innerHTML = `<span class="name">• ${name}</span><span class="price">$${price}</span>`;
       outDesayunos.appendChild(row);
     });
 
