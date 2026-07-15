@@ -319,14 +319,14 @@
         <h1 class="title">Menú</h1>
         <hr class="divider" />
 
-        <div class="section-title" id="out-desayunoTitulo">DESAYUNOS 8:00 a 12:00</div>
+        <div class="section-title" id="out-desayunoTitulo">DESAYUNOS COMPLETOS<br/><span id="out-horDesayuno">8:00 a 12:00</span></div>
 
         <div class="line pink" id="out-incluye1">Café o té</div>
         <div class="line pink" id="out-incluye2">* Jugo o fruta</div>
 
         <div id="out-desayunos"></div>
 
-        <div class="section-title" id="out-comidaTitulo">COMIDAS 2:00 a 4:00</div>
+        <div class="section-title" id="out-comidaTitulo">COMIDAS COMPLETAS<br/><span id="out-horComida">2:00 a 4:00</span></div>
 
         <div class="line pink" id="out-guarniciones">Espagueti, arroz, frijoles</div>
 
@@ -384,10 +384,10 @@
   makeItemRow(comidasList, 'Pollo en crema con verduras o queso en salsa tatemada', '95');
 
   function render(){
-    document.getElementById('out-desayunoTitulo').textContent =
-  'DESAYUNOS COMPLETOS ' + document.getElementById('horDesayuno').value;
-    document.getElementById('out-comidaTitulo').textContent =
-      'COMIDAS COMPLETAS ' + document.getElementById('horComida').value;
+    document.getElementById('out-horDesayuno').textContent =
+  document.getElementById('horDesayuno').value;
+    document.getElementById('out-horComida').textContent =
+  document.getElementById('horComida').value;
 
     document.getElementById('out-incluye1').textContent =
       document.getElementById('incluye1').value;
