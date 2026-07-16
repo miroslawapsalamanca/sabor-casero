@@ -6,7 +6,6 @@
 <style>
   :root{
     --board:#23302c;
-    --board-dark:#1a2521;
     --frame:#cdbfae;
     --frame-shadow:#8a7560;
     --chalk-pink:#f2a6c6;
@@ -18,37 +17,60 @@
 
   *{box-sizing:border-box;}
 
-  .app{
-    display:flex;
-    gap:28px;
+  body{
     font-family:'Patrick Hand', sans-serif;
     color:#2b2b2b;
-    background:transparent;
-    flex-wrap:wrap;
-    align-items:flex-start;
+    background:#f5ede0;
+    margin:0;
+    padding:16px;
   }
 
-  /* ---------- FORM PANEL ---------- */
-  .panel{
-    flex:1 1 340px;
-    min-width:300px;
-    background:#fffaf2;
-    border:2px solid #e4d8c5;
-    border-radius:14px;
-    padding:20px 22px 26px;
-  }
-  .panel h2{
+  h1.app-title{
     font-family:'Kalam', cursive;
-    font-size:22px;
-    margin:0 0 4px;
+    font-size:24px;
     color:#5b4636;
+    margin:0 0 4px;
   }
-  .panel .sub{
+  p.app-sub{
     font-size:14px;
     color:#8a7a68;
-    margin:0 0 18px;
-    font-family: system-ui, sans-serif;
+    margin:0 0 20px;
+    font-family:system-ui,sans-serif;
   }
+
+  /* TABS */
+  .tabs{
+    display:flex;
+    gap:8px;
+    margin-bottom:20px;
+  }
+  .tab{
+    font-family:'Kalam',cursive;
+    font-size:17px;
+    padding:8px 20px;
+    border:2px solid #e4d8c5;
+    border-radius:10px 10px 0 0;
+    background:#fffaf2;
+    color:#8a7060;
+    cursor:pointer;
+    border-bottom:none;
+  }
+  .tab.active{
+    background:#5b7a5e;
+    color:#fff;
+    border-color:#5b7a5e;
+  }
+
+  /* PANEL */
+  .panel{
+    background:#fffaf2;
+    border:2px solid #e4d8c5;
+    border-radius:0 14px 14px 14px;
+    padding:20px 22px 26px;
+    display:none;
+  }
+  .panel.active{display:block;}
+
   .field{margin-bottom:14px;}
   .field label{
     display:block;
@@ -56,27 +78,27 @@
     font-weight:600;
     color:#6b5a47;
     margin-bottom:4px;
-    font-family: system-ui, sans-serif;
+    font-family:system-ui,sans-serif;
   }
-  .field input, .field textarea{
+  .field input,.field textarea{
     width:100%;
     border:1.5px solid #ddd0bd;
     border-radius:8px;
     padding:8px 10px;
-    font-family: system-ui, sans-serif;
+    font-family:system-ui,sans-serif;
     font-size:14px;
     background:#fff;
     resize:vertical;
   }
-  .field input:focus, .field textarea:focus{
+  .field input:focus,.field textarea:focus{
     outline:none;
     border-color:#c79a6b;
   }
-  .row2{display:flex; gap:10px;}
+  .row2{display:flex;gap:10px;}
   .row2 .field{flex:1;}
 
   .section-label{
-    font-family:'Kalam', cursive;
+    font-family:'Kalam',cursive;
     font-size:16px;
     color:#a8763f;
     margin:18px 0 8px;
@@ -94,19 +116,16 @@
   .item-block .field{margin-bottom:10px;}
 
   .btn{
-    font-family:'Kalam', cursive;
+    font-family:'Kalam',cursive;
     font-size:16px;
     border:none;
     border-radius:9px;
     padding:10px 16px;
     cursor:pointer;
-    transition:transform .08s ease, opacity .15s ease;
+    transition:transform .08s ease,opacity .15s ease;
   }
   .btn:active{transform:scale(0.97);}
-  .btn-secondary{
-    background:#f1e6d6;
-    color:#6b5a47;
-  }
+  .btn-secondary{background:#f1e6d6;color:#6b5a47;}
   .btn-primary{
     background:#5b7a5e;
     color:#fff;
@@ -117,365 +136,298 @@
   }
   .btn-primary:hover{opacity:.92;}
 
-  /* ---------- PREVIEW / BOARD ---------- */
-  .preview-wrap{
-    flex:1 1 360px;
-    min-width:320px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-  }
-
+  /* BOARD */
   .board-frame{
     width:100%;
-    max-width:440px;
-    background:
-      linear-gradient(155deg, var(--frame) 0%, var(--frame-shadow) 100%);
+    max-width:420px;
+    background:linear-gradient(155deg,var(--frame) 0%,var(--frame-shadow) 100%);
     border-radius:10px;
-    padding:16px;
+    padding:14px;
     box-shadow:0 10px 30px rgba(0,0,0,.18);
+    margin:24px auto 0;
   }
-
   .board{
-    background:
-      radial-gradient(ellipse at 30% 20%, rgba(255,255,255,.04), transparent 60%),
-      var(--board);
+    background:radial-gradient(ellipse at 30% 20%,rgba(255,255,255,.04),transparent 60%),var(--board);
     border-radius:4px;
-    padding:26px 22px 22px;
-    min-height:560px;
+    padding:22px 20px 20px;
     position:relative;
-    font-family:'Kalam', cursive;
+    font-family:'Kalam',cursive;
     color:var(--chalk-white);
     overflow:hidden;
   }
   .board::before{
     content:"";
-    position:absolute; inset:0;
-    background:repeating-linear-gradient(0deg, rgba(255,255,255,.012) 0px, transparent 2px, transparent 4px);
+    position:absolute;inset:0;
+    background:repeating-linear-gradient(0deg,rgba(255,255,255,.012) 0px,transparent 2px,transparent 4px);
     pointer-events:none;
   }
-
   .board .leaf-row{
-    text-align:center;
-    font-size:13px;
-    color:#9fb09a;
-    opacity:.55;
-    letter-spacing:4px;
-    margin-bottom:2px;
+    text-align:center;font-size:13px;color:#9fb09a;
+    opacity:.55;letter-spacing:4px;margin-bottom:2px;
   }
-
   .board h1.title{
-    font-family:'Caveat', cursive;
-    font-weight:700;
-    font-size:54px;
-    text-align:center;
-    margin:0 0 10px;
-    color:var(--chalk-white);
+    font-family:'Caveat',cursive;font-weight:700;font-size:50px;
+    text-align:center;margin:0 0 8px;color:var(--chalk-white);
     text-shadow:0 0 1px rgba(255,255,255,.3);
   }
-
   .divider{
-    border:none;
-    border-top:2px solid var(--chalk-pink);
-    opacity:.65;
-    margin:6px 0 12px;
+    border:none;border-top:2px solid var(--chalk-pink);
+    opacity:.65;margin:4px 0 10px;
   }
-
   .board .section-title{
-    font-size:25px;
-    color:var(--chalk-yellow);
-    text-align:center;
-    border:2px solid var(--chalk-pink);
-    border-radius:3px;
-    padding:4px 8px;
-    margin:14px 0 12px;
-    opacity:.95;
+    font-size:23px;color:var(--chalk-yellow);
+    text-align:center;border:2px solid var(--chalk-pink);
+    border-radius:3px;padding:4px 8px;margin:12px 0 10px;opacity:.95;
   }
-
-  .board .line{
-    font-size:21px;
-    line-height:1.32;
-    margin:2px 0;
-    color:var(--chalk-white);
-  }
+  .board .line{font-size:20px;line-height:1.32;margin:2px 0;color:var(--chalk-white);}
   .board .line.pink{color:var(--chalk-pink);}
   .board .line.blue{color:var(--chalk-blue);}
-  .board .line.green{color:var(--chalk-green);}
-
   .board .menu-item{
-    display:flex;
-    justify-content:space-between;
-    align-items:baseline;
-    gap:8px;
-    margin:3px 0;
+    display:flex;justify-content:space-between;
+    align-items:baseline;gap:8px;margin:3px 0;
   }
-  .board .menu-item .name{
-    font-size:21px;
-    color:var(--chalk-blue);
-    flex:1;
-  }
-  .board .menu-item .price{
-    font-size:23px;
-    color:var(--chalk-pink);
-    white-space:nowrap;
-  }
-
-  .board .extras{
-    font-size:20px;
-    color:var(--chalk-green);
-    margin-top:8px;
-  }
-
+  .board .menu-item .name{font-size:20px;color:var(--chalk-blue);flex:1;}
+  .board .menu-item .price{font-size:22px;color:var(--chalk-pink);white-space:nowrap;}
+  .board .extras{font-size:19px;color:var(--chalk-green);margin-top:6px;}
   .board .logo-row{
-    display:flex;
-    align-items:center;
-    justify-content:flex-end;
-    gap:10px;
-    margin-top:18px;
-    padding-top:10px;
+    display:flex;align-items:center;justify-content:flex-end;
+    gap:10px;margin-top:16px;padding-top:8px;
   }
   .board .logo-text{
-    font-family:'Kalam', cursive;
-    font-weight:700;
-    color:var(--chalk-white);
-    font-size:19px;
-    line-height:1.05;
-    text-align:right;
+    font-family:'Kalam',cursive;font-weight:700;
+    color:var(--chalk-white);font-size:18px;line-height:1.05;text-align:right;
   }
-  .board .logo-icon{font-size:28px;}
+  .board .logo-icon{font-size:26px;}
 
   .hint{
-    font-family: system-ui, sans-serif;
-    font-size:12.5px;
-    color:#9a8c79;
-    margin-top:10px;
-    text-align:center;
-    max-width:380px;
-  }
-
-  @media (max-width:760px){
-    .app{flex-direction:column;}
+    font-family:system-ui,sans-serif;font-size:12px;color:#9a8c79;
+    margin-top:8px;text-align:center;
   }
 </style>
 
-<div class="app">
+<h1 class="app-title">Menú del día — Sabor Casero</h1>
+<p class="app-sub">Llena los campos, descarga cada imagen por separado.</p>
 
-  <!-- ===================== FORM PANEL ===================== -->
-  <div class="panel">
-    <h2>Menú del día — Sabor Casero</h2>
-    <p class="sub">Llena los campos y el menú se va actualizando solo. Cuando esté listo, descarga la imagen.</p>
+<!-- TABS -->
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('desayuno')">☕ Desayunos</div>
+  <div class="tab" onclick="switchTab('comida')">🍽 Comidas</div>
+</div>
 
-    <div class="row2">
-      <div class="field">
-        <label>Horario desayunos</label>
-        <input id="horDesayuno" value="8:00 a 12:00" />
-      </div>
-      <div class="field">
-        <label>Horario comidas</label>
-        <input id="horComida" value="2:00 a 4:00" />
-      </div>
-    </div>
-
-    <div class="section-label">Desayunos — incluye</div>
+<!-- ===== PANEL DESAYUNOS ===== -->
+<div class="panel active" id="panel-desayuno">
+  <div class="row2">
     <div class="field">
-      <input id="incluye1" value="Café o té" />
+      <label>Horario</label>
+      <input id="horDesayuno" value="8:00 a 12:00pm" />
     </div>
-    <div class="field">
-      <input id="incluye2" value="Jugo o fruta" />
-    </div>
-
-    <div id="desayunos-list"></div>
-    <button class="btn btn-secondary" id="addDesayuno">+ Agregar paquete de desayuno</button>
-
-    <div class="section-label">Comidas</div>
-    <div class="field">
-      <label>Guarniciones (texto libre)</label>
-      <textarea id="guarniciones" rows="2">Espagueti, arroz, frijoles</textarea>
-    </div>
-
-    <div id="comidas-list"></div>
-    <button class="btn btn-secondary" id="addComida">+ Agregar platillo fuerte</button>
-
-    <div class="section-label">Extras</div>
-    <div class="row2">
-      <div class="field">
-        <label>Postre</label>
-        <input id="postre" value="" placeholder="flan, gelatina..." />
-      </div>
-      <div class="field">
-        <label>Agua</label>
-        <input id="agua" value="" placeholder="jamaica, limón..." />
-      </div>
-    </div>
-
-    <button class="btn btn-primary" id="downloadBtn">⬇ Descargar menú de hoy (PNG)</button>
   </div>
 
-  <!-- ===================== PREVIEW ===================== -->
-  <div class="preview-wrap">
-    <div class="board-frame">
-      <div class="board" id="boardCapture">
-        <div class="leaf-row">~ ~ ~ ~ ~ ~ ~ ~ ~</div>
-        <h1 class="title">Menú</h1>
-        <hr class="divider" />
+  <div class="section-label">Incluye</div>
+  <div class="field"><input id="incluye1" value="Café o té" /></div>
+  <div class="field"><input id="incluye2" value="Jugo o fruta" /></div>
 
-        <div class="section-title" id="out-desayunoTitulo">DESAYUNOS COMPLETOS<br/><span id="out-horDesayuno">8:00 a 12:00</span></div>
+  <div class="section-label">Paquetes</div>
+  <div id="desayunos-list"></div>
+  <button class="btn btn-secondary" id="addDesayuno">+ Agregar paquete</button>
 
-        <div class="line pink" id="out-incluye1">Café o té</div>
-        <div class="line pink" id="out-incluye2">* Jugo o fruta</div>
+  <div class="section-label">Extras desayuno</div>
+  <div class="field">
+    <label>Postre</label>
+    <input id="postred" value="" placeholder="flan, gelatina..." />
+  </div>
+  <div class="field">
+    <label>Agua</label>
+    <input id="aguad" value="" placeholder="jamaica, limón..." />
+  </div>
 
-        <div id="out-desayunos"></div>
+  <button class="btn btn-primary" id="downloadDesayuno">⬇ Descargar imagen desayunos</button>
 
-        <div class="section-title" id="out-comidaTitulo">COMIDAS COMPLETAS<br/><span id="out-horComida">2:00 a 4:00</span></div>
-
-        <div class="line pink" id="out-guarniciones">Espagueti, arroz, frijoles</div>
-
-        <div id="out-comidas"></div>
-
-        <div class="extras" id="out-postre">Postre</div>
-        <div class="extras" id="out-agua">Agua</div>
-
-        <div class="logo-row">
-          <div class="logo-icon">🍴</div>
-          <div class="logo-text">SABOR<br/>CASERO</div>
-        </div>
+  <div class="board-frame">
+    <div class="board" id="boardDesayuno">
+      <div class="leaf-row">~ ~ ~ ~ ~ ~ ~ ~ ~</div>
+      <h1 class="title">Menú</h1>
+      <hr class="divider"/>
+      <div class="section-title">DESAYUNOS COMPLETOS<br/><span id="out-horDesayuno">8:00 a 12:00pm</span></div>
+      <div class="line pink" id="out-incluye1">Café o té</div>
+      <div class="line pink" id="out-incluye2">* Jugo o fruta</div>
+      <div id="out-desayunos"></div>
+      <div class="extras" id="out-postred">Postre</div>
+      <div class="extras" id="out-aguad">Agua</div>
+      <div class="logo-row">
+        <div class="logo-icon">🍴</div>
+        <div class="logo-text">SABOR<br/>CASERO</div>
       </div>
+    </div>
+  </div>
+  <p class="hint">Esta vista previa es exactamente lo que se descarga.</p>
+</div>
+
+<!-- ===== PANEL COMIDAS ===== -->
+<div class="panel" id="panel-comida">
+  <div class="field">
+    <label>Horario</label>
+    <input id="horComida" value="2:00 a 4:00pm" />
+  </div>
+
+  <div class="section-label">Guarniciones</div>
+  <div class="field">
+    <textarea id="guarniciones" rows="2">Espagueti, arroz, frijoles</textarea>
+  </div>
+
+  <div class="section-label">Platillos</div>
+  <div id="comidas-list"></div>
+  <button class="btn btn-secondary" id="addComida">+ Agregar platillo</button>
+
+  <div class="section-label">Extras comida</div>
+  <div class="field">
+    <label>Postre</label>
+    <input id="postrec" value="" placeholder="flan, gelatina..." />
+  </div>
+  <div class="field">
+    <label>Agua</label>
+    <input id="aguac" value="" placeholder="jamaica, limón..." />
+  </div>
+
+  <button class="btn btn-primary" id="downloadComida">⬇ Descargar imagen comidas</button>
+
+  <div class="board-frame">
+    <div class="board" id="boardComida">
+      <div class="leaf-row">~ ~ ~ ~ ~ ~ ~ ~ ~</div>
+      <h1 class="title">Menú</h1>
+      <hr class="divider"/>
+      <div class="section-title">COMIDAS COMPLETAS<br/><span id="out-horComida">2:00 a 4:00pm</span></div>
+      <div class="line pink" id="out-guarniciones">Guarniciones: Espagueti, arroz, frijoles</div>
+      <div id="out-comidas"></div>
+      <div class="extras" id="out-postrec">Postre</div>
+      <div class="extras" id="out-aguac">Agua</div>
+      <div class="logo-row">
+        <div class="logo-icon">🍴</div>
+        <div class="logo-text">SABOR<br/>CASERO</div>
+      </div>
+    </div>
+  </div>
+  <p class="hint">Esta vista previa es exactamente lo que se descarga.</p>
 </div>
 
 <script>
 (function(){
+  // ---- TABS ----
+  window.switchTab = function(tab){
+    document.querySelectorAll('.tab').forEach((t,i) => {
+      t.classList.toggle('active', (i===0 && tab==='desayuno') || (i===1 && tab==='comida'));
+    });
+    document.getElementById('panel-desayuno').classList.toggle('active', tab==='desayuno');
+    document.getElementById('panel-comida').classList.toggle('active', tab==='comida');
+  };
+
   const desayunosList = document.getElementById('desayunos-list');
-  const comidasList = document.getElementById('comidas-list');
+  const comidasList   = document.getElementById('comidas-list');
 
   function makeItemRow(container, defaultName, defaultPrice){
     const wrap = document.createElement('div');
     wrap.className = 'item-block';
     wrap.innerHTML = `
-      <div class="field">
-        <label>Platillo</label>
-        <input class="item-name" value="${defaultName}" />
-      </div>
-      <div class="field">
-        <label>Precio</label>
-        <input class="item-price" value="${defaultPrice}" />
-      </div>
+      <div class="field"><label>Platillo</label><input class="item-name" value="${defaultName}" /></div>
+      <div class="field"><label>Precio</label><input class="item-price" value="${defaultPrice}" /></div>
       <button class="btn btn-secondary remove-btn" style="font-size:12px;padding:5px 10px;">Quitar</button>
     `;
-    wrap.querySelector('.remove-btn').addEventListener('click', () => {
-      wrap.remove();
-      render();
-    });
+    wrap.querySelector('.remove-btn').addEventListener('click', () => { wrap.remove(); render(); });
     wrap.querySelectorAll('input').forEach(i => i.addEventListener('input', render));
     container.appendChild(wrap);
   }
 
   document.getElementById('addDesayuno').addEventListener('click', () => {
-    makeItemRow(desayunosList, 'Huevos al gusto o molletes', '80');
-    render();
+    makeItemRow(desayunosList, 'Huevos al gusto o molletes', '80'); render();
   });
   document.getElementById('addComida').addEventListener('click', () => {
-    makeItemRow(comidasList, 'Pollo en crema con verduras', '95');
-    render();
+    makeItemRow(comidasList, 'Pollo en crema con verduras', '95'); render();
   });
 
-  // seed with example data matching the chalkboard photo
   makeItemRow(desayunosList, 'Huevos al gusto o molletes', '80');
   makeItemRow(desayunosList, 'Chilaquiles con pollo o huevo', '95');
   makeItemRow(comidasList, 'Pollo en crema con verduras o queso en salsa tatemada', '95');
 
   function render(){
-    document.getElementById('out-horDesayuno').textContent =
-  document.getElementById('horDesayuno').value;
-    document.getElementById('out-horComida').textContent =
-  document.getElementById('horComida').value;
+    document.getElementById('out-horDesayuno').textContent = document.getElementById('horDesayuno').value;
+    document.getElementById('out-horComida').textContent   = document.getElementById('horComida').value;
+    document.getElementById('out-incluye1').textContent    = document.getElementById('incluye1').value;
+    document.getElementById('out-incluye2').textContent    = '* ' + document.getElementById('incluye2').value;
+    document.getElementById('out-guarniciones').textContent = 'Guarniciones: ' + document.getElementById('guarniciones').value;
 
-    document.getElementById('out-incluye1').textContent =
-      document.getElementById('incluye1').value;
-    document.getElementById('out-incluye2').textContent =
-      '* ' + document.getElementById('incluye2').value;
-
-    document.getElementById('out-guarniciones').textContent =
-      'Guarniciones: ' + document.getElementById('guarniciones').value;
-
-    const outDesayunos = document.getElementById('out-desayunos');
-    outDesayunos.innerHTML = '';
-    desayunosList.querySelectorAll('.item-block').forEach((block, idx) => {
+    const outD = document.getElementById('out-desayunos');
+    outD.innerHTML = '';
+    desayunosList.querySelectorAll('.item-block').forEach(block => {
       const name = block.querySelector('.item-name').value;
       const price = block.querySelector('.item-price').value;
       const row = document.createElement('div');
       row.className = 'menu-item';
       row.innerHTML = `<span class="name">• ${name}</span><span class="price">$${price}</span>`;
-      outDesayunos.appendChild(row);
+      outD.appendChild(row);
     });
 
-    const outComidas = document.getElementById('out-comidas');
-    outComidas.innerHTML = '';
+    const outC = document.getElementById('out-comidas');
+    outC.innerHTML = '';
     comidasList.querySelectorAll('.item-block').forEach(block => {
       const name = block.querySelector('.item-name').value;
       const price = block.querySelector('.item-price').value;
       const row = document.createElement('div');
       row.className = 'menu-item';
       row.innerHTML = `<span class="name">• ${name}</span><span class="price">$${price}</span>`;
-      outComidas.appendChild(row);
+      outC.appendChild(row);
     });
 
-    const postreVal = document.getElementById('postre').value.trim();
-    const aguaVal = document.getElementById('agua').value.trim();
-    document.getElementById('out-postre').textContent = 'Postre' + (postreVal !== '' ? ': ' + postreVal : '');
-    document.getElementById('out-agua').textContent = 'Agua' + (aguaVal !== '' ? ': ' + aguaVal : '');
+    const pd = document.getElementById('postred').value.trim();
+    const ad = document.getElementById('aguad').value.trim();
+    document.getElementById('out-postred').textContent = 'Postre' + (pd ? ': ' + pd : '');
+    document.getElementById('out-aguad').textContent   = 'Agua'   + (ad ? ': ' + ad : '');
+
+    const pc = document.getElementById('postrec').value.trim();
+    const ac = document.getElementById('aguac').value.trim();
+    document.getElementById('out-postrec').textContent = 'Postre' + (pc ? ': ' + pc : '');
+    document.getElementById('out-aguac').textContent   = 'Agua'   + (ac ? ': ' + ac : '');
   }
 
-  document.querySelectorAll('.panel input, .panel textarea').forEach(el => {
-    el.addEventListener('input', render);
-  });
-
-  document.getElementById('downloadBtn').addEventListener('click', async () => {
-    const original = document.getElementById('boardCapture');
-
-    // Clonamos el menú y lo ponemos con ancho fijo, fuera de pantalla,
-    // para que la imagen salga igual en cualquier celular.
+  // ---- DESCARGA ----
+  async function descargar(boardId, filename){
+    const original = document.getElementById(boardId);
     const clone = original.cloneNode(true);
     clone.style.width = '400px';
     clone.style.position = 'fixed';
     clone.style.top = '-9999px';
     clone.style.left = '0';
     document.body.appendChild(clone);
-
-    const canvas = await html2canvas(clone, {scale: 3, backgroundColor: '#23302c', width: 400});
-
+    const canvas = await html2canvas(clone, {scale:3, backgroundColor:'#23302c', width:400});
     document.body.removeChild(clone);
-
     const link = document.createElement('a');
     const today = new Date().toISOString().slice(0,10);
-    link.download = `menu-sabor-casero-${today}.png`;
+    link.download = `${filename}-${today}.png`;
     link.href = canvas.toDataURL('image/png');
     link.click();
-  });
+  }
+
+  document.getElementById('downloadDesayuno').addEventListener('click', () => descargar('boardDesayuno', 'desayunos-sabor-casero'));
+  document.getElementById('downloadComida').addEventListener('click',   () => descargar('boardComida',   'comidas-sabor-casero'));
 
   // ---- GUARDAR Y CARGAR ----
   function guardar(){
     const datos = {
       horDesayuno: document.getElementById('horDesayuno').value,
-      horComida: document.getElementById('horComida').value,
-      incluye1: document.getElementById('incluye1').value,
-      incluye2: document.getElementById('incluye2').value,
-      guarniciones: document.getElementById('guarniciones').value,
-      postre: document.getElementById('postre').value,
-      agua: document.getElementById('agua').value,
-      desayunos: [],
-      comidas: []
+      horComida:   document.getElementById('horComida').value,
+      incluye1:    document.getElementById('incluye1').value,
+      incluye2:    document.getElementById('incluye2').value,
+      guarniciones:document.getElementById('guarniciones').value,
+      postred: document.getElementById('postred').value,
+      aguad:   document.getElementById('aguad').value,
+      postrec: document.getElementById('postrec').value,
+      aguac:   document.getElementById('aguac').value,
+      desayunos:[], comidas:[]
     };
-    desayunosList.querySelectorAll('.item-block').forEach(block => {
-      datos.desayunos.push({
-        name: block.querySelector('.item-name').value,
-        price: block.querySelector('.item-price').value
-      });
+    desayunosList.querySelectorAll('.item-block').forEach(b => {
+      datos.desayunos.push({name:b.querySelector('.item-name').value, price:b.querySelector('.item-price').value});
     });
-    comidasList.querySelectorAll('.item-block').forEach(block => {
-      datos.comidas.push({
-        name: block.querySelector('.item-name').value,
-        price: block.querySelector('.item-price').value
-      });
+    comidasList.querySelectorAll('.item-block').forEach(b => {
+      datos.comidas.push({name:b.querySelector('.item-name').value, price:b.querySelector('.item-price').value});
     });
     localStorage.setItem('menuSaborCasero', JSON.stringify(datos));
   }
@@ -483,29 +435,26 @@
   function cargar(){
     const raw = localStorage.getItem('menuSaborCasero');
     if(!raw) return;
-    const datos = JSON.parse(raw);
-    document.getElementById('horDesayuno').value = datos.horDesayuno || '';
-    document.getElementById('horComida').value = datos.horComida || '';
-    document.getElementById('incluye1').value = datos.incluye1 || '';
-    document.getElementById('incluye2').value = datos.incluye2 || '';
-    document.getElementById('guarniciones').value = datos.guarniciones || '';
-    document.getElementById('postre').value = datos.postre || '';
-    document.getElementById('agua').value = datos.agua || '';
-
+    const d = JSON.parse(raw);
+    document.getElementById('horDesayuno').value  = d.horDesayuno  || '';
+    document.getElementById('horComida').value    = d.horComida    || '';
+    document.getElementById('incluye1').value     = d.incluye1     || '';
+    document.getElementById('incluye2').value     = d.incluye2     || '';
+    document.getElementById('guarniciones').value = d.guarniciones || '';
+    document.getElementById('postred').value = d.postred || '';
+    document.getElementById('aguad').value   = d.aguad   || '';
+    document.getElementById('postrec').value = d.postrec || '';
+    document.getElementById('aguac').value   = d.aguac   || '';
     desayunosList.innerHTML = '';
-    (datos.desayunos || []).forEach(d => makeItemRow(desayunosList, d.name, d.price));
-
+    (d.desayunos||[]).forEach(x => makeItemRow(desayunosList, x.name, x.price));
     comidasList.innerHTML = '';
-    (datos.comidas || []).forEach(d => makeItemRow(comidasList, d.name, d.price));
+    (d.comidas||[]).forEach(x => makeItemRow(comidasList, x.name, x.price));
   }
 
-  // Guardar automático cada vez que haya un cambio
-  document.addEventListener('input', () => { guardar(); });
-  document.addEventListener('click', () => { setTimeout(guardar, 100); });
+  document.addEventListener('input',  () => { render(); guardar(); });
+  document.addEventListener('click',  () => { setTimeout(()=>{ guardar(); }, 100); });
 
-  // Cargar al abrir la página
   cargar();
-
   render();
 })();
 </script>
