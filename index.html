@@ -175,10 +175,19 @@
     opacity:.65;margin:4px 0 10px;
   }
   .board .section-title{
-    font-size:23px;color:var(--chalk-yellow);
-    text-align:center;border:2px solid var(--chalk-pink);
-    border-radius:3px;padding:4px 8px;margin:12px 0 10px;opacity:.95;
-  }
+  font-size:23px;color:var(--chalk-yellow);
+  text-align:center;border:2px solid var(--chalk-pink);
+  border-radius:3px;padding:4px 8px;margin:12px 0 10px;opacity:.95;
+  white-space:nowrap;
+}
+@media(max-width:480px){
+  .board .section-title{font-size:16px;}
+  .board h1.title{font-size:38px;}
+  .board .line{font-size:15px;}
+  .board .menu-item .name{font-size:15px;}
+  .board .menu-item .price{font-size:16px;}
+  .board .extras{font-size:14px;}
+}
   .board .line{font-size:20px;line-height:1.32;margin:2px 0;color:var(--chalk-white);}
   .board .line.pink{color:var(--chalk-pink);}
   .board .line.blue{color:var(--chalk-blue);}
