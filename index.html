@@ -414,7 +414,7 @@
   function formatFecha(val) {
     if (!val) return '';
     return new Date(val + 'T12:00:00').toLocaleDateString('es-MX', {
-      weekday: 'long', day: 'numeric', month: 'long'
+      weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
     });
   }
 
