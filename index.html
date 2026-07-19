@@ -4,227 +4,273 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 <style>
-  :root{
-    --board:#23302c;
-    --frame:#cdbfae;
-    --frame-shadow:#8a7560;
-    --chalk-pink:#f2a6c6;
-    --chalk-yellow:#e8d870;
-    --chalk-blue:#8fd0e0;
-    --chalk-white:#f2efe6;
-    --chalk-green:#a8d8a0;
+  /* ===== VARIABLES ===== */
+  :root {
+    --board: #23302c;
+    --frame: #cdbfae;
+    --frame-shadow: #8a7560;
+    --chalk-pink: #f2a6c6;
+    --chalk-yellow: #e8d870;
+    --chalk-blue: #8fd0e0;
+    --chalk-white: #f2efe6;
+    --chalk-green: #a8d8a0;
   }
 
-  *{box-sizing:border-box;}
+  * { box-sizing: border-box; }
 
-  body{
-    font-family:'Patrick Hand', sans-serif;
-    color:#2b2b2b;
-    background:#f5ede0;
-    margin:0;
-    padding:16px;
-  }
-
-  h1.app-title{
-    font-family:'Kalam', cursive;
-    font-size:24px;
-    color:#5b4636;
-    margin:0 0 4px;
-  }
-  p.app-sub{
-    font-size:14px;
-    color:#8a7a68;
-    margin:0 0 20px;
-    font-family:system-ui,sans-serif;
+  body {
+    font-family: 'Patrick Hand', sans-serif;
+    color: #2b2b2b;
+    background: #f5ede0;
+    margin: 0;
+    padding: 16px;
   }
 
-  /* TABS */
-  .tabs{
-    display:flex;
-    gap:8px;
-    margin-bottom:20px;
+  /* ===== ENCABEZADO ===== */
+  h1.app-title {
+    font-family: 'Kalam', cursive;
+    font-size: 24px;
+    color: #5b4636;
+    margin: 0 0 4px;
   }
-  .tab{
-    font-family:'Kalam',cursive;
-    font-size:17px;
-    padding:8px 20px;
-    border:2px solid #e4d8c5;
-    border-radius:10px 10px 0 0;
-    background:#fffaf2;
-    color:#8a7060;
-    cursor:pointer;
-    border-bottom:none;
-  }
-  .tab.active{
-    background:#5b7a5e;
-    color:#fff;
-    border-color:#5b7a5e;
+  p.app-sub {
+    font-size: 14px;
+    color: #8a7a68;
+    margin: 0 0 20px;
+    font-family: system-ui, sans-serif;
   }
 
-  /* PANEL */
-  .panel{
-    background:#fffaf2;
-    border:2px solid #e4d8c5;
-    border-radius:0 14px 14px 14px;
-    padding:20px 22px 26px;
-    display:none;
+  /* ===== TABS ===== */
+  .tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 0;
   }
-  .panel.active{display:block;}
-
-  .field{margin-bottom:14px;}
-  .field label{
-    display:block;
-    font-size:13px;
-    font-weight:600;
-    color:#6b5a47;
-    margin-bottom:4px;
-    font-family:system-ui,sans-serif;
+  .tab {
+    font-family: 'Kalam', cursive;
+    font-size: 17px;
+    padding: 8px 20px;
+    border: 2px solid #e4d8c5;
+    border-radius: 10px 10px 0 0;
+    background: #fffaf2;
+    color: #8a7060;
+    cursor: pointer;
+    border-bottom: none;
   }
-  .field input,.field textarea{
-    width:100%;
-    border:1.5px solid #ddd0bd;
-    border-radius:8px;
-    padding:8px 10px;
-    font-family:system-ui,sans-serif;
-    font-size:14px;
-    background:#fff;
-    resize:vertical;
-  }
-  .field input:focus,.field textarea:focus{
-    outline:none;
-    border-color:#c79a6b;
-  }
-  .row2{display:flex;gap:10px;}
-  .row2 .field{flex:1;}
-
-  .section-label{
-    font-family:'Kalam',cursive;
-    font-size:16px;
-    color:#a8763f;
-    margin:18px 0 8px;
-    border-bottom:1px dashed #e4d8c5;
-    padding-bottom:4px;
+  .tab.active {
+    background: #5b7a5e;
+    color: #fff;
+    border-color: #5b7a5e;
   }
 
-  .item-block{
-    border:1px solid #eee2d0;
-    border-radius:10px;
-    padding:10px 12px;
-    margin-bottom:10px;
-    background:#fffdf8;
+  /* ===== PANEL FORMULARIO ===== */
+  .panel {
+    display: none;
+    background: #fffaf2;
+    border: 2px solid #e4d8c5;
+    border-radius: 0 14px 14px 14px;
+    padding: 20px 22px 26px;
   }
-  .item-block .field{margin-bottom:10px;}
+  .panel.active { display: block; }
 
-  .btn{
-    font-family:'Kalam',cursive;
-    font-size:16px;
-    border:none;
-    border-radius:9px;
-    padding:10px 16px;
-    cursor:pointer;
-    transition:transform .08s ease,opacity .15s ease;
+  .field { margin-bottom: 14px; }
+  .field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #6b5a47;
+    margin-bottom: 4px;
+    font-family: system-ui, sans-serif;
   }
-  .btn:active{transform:scale(0.97);}
-  .btn-secondary{background:#f1e6d6;color:#6b5a47;}
-  .btn-primary{
-    background:#5b7a5e;
-    color:#fff;
-    width:100%;
-    margin-top:18px;
-    font-size:18px;
-    padding:13px 16px;
+  .field input,
+  .field textarea {
+    width: 100%;
+    border: 1.5px solid #ddd0bd;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-family: system-ui, sans-serif;
+    font-size: 14px;
+    background: #fff;
+    resize: vertical;
   }
-  .btn-primary:hover{opacity:.92;}
+  .field input:focus,
+  .field textarea:focus {
+    outline: none;
+    border-color: #c79a6b;
+  }
+  .row2 { display: flex; gap: 10px; }
+  .row2 .field { flex: 1; }
 
-  /* BOARD */
-  .board-frame{
-    width:100%;
-    max-width:420px;
-    background:linear-gradient(155deg,var(--frame) 0%,var(--frame-shadow) 100%);
-    border-radius:10px;
-    padding:14px;
-    box-shadow:0 10px 30px rgba(0,0,0,.18);
-    margin:24px auto 0;
+  .section-label {
+    font-family: 'Kalam', cursive;
+    font-size: 16px;
+    color: #a8763f;
+    margin: 18px 0 8px;
+    border-bottom: 1px dashed #e4d8c5;
+    padding-bottom: 4px;
   }
-  .board{
-    background:radial-gradient(ellipse at 30% 20%,rgba(255,255,255,.04),transparent 60%),var(--board);
-    border-radius:4px;
-    padding:22px 20px 20px;
-    position:relative;
-    font-family:'Kalam',cursive;
-    color:var(--chalk-white);
-    overflow:hidden;
-  }
-  .board::before{
-    content:"";
-    position:absolute;inset:0;
-    background:repeating-linear-gradient(0deg,rgba(255,255,255,.012) 0px,transparent 2px,transparent 4px);
-    pointer-events:none;
-  }
-  .board .leaf-row{
-    text-align:center;font-size:13px;color:#9fb09a;
-    opacity:.55;letter-spacing:4px;margin-bottom:2px;
-  }
-  .board h1.title{
-    font-family:'Caveat',cursive;font-weight:700;font-size:50px;
-    text-align:center;margin:0 0 8px;color:var(--chalk-white);
-    text-shadow:0 0 1px rgba(255,255,255,.3);
-  }
-  .divider{
-    border:none;border-top:2px solid var(--chalk-pink);
-    opacity:.65;margin:4px 0 10px;
-  }
-  .board .section-title{
-  font-size:23px;color:var(--chalk-yellow);
-  text-align:center;border:2px solid var(--chalk-pink);
-  border-radius:3px;padding:4px 8px;margin:12px 0 10px;opacity:.95;
-  white-space:nowrap;
-}
-@media(max-width:480px){
-  .board .section-title{font-size:16px;}
-  .board h1.title{font-size:38px;}
-  .board .line{font-size:15px;}
-  .board .menu-item .name{font-size:15px;}
-  .board .menu-item .price{font-size:16px;}
-  .board .extras{font-size:14px;}
-}
-  .board .line{font-size:20px;line-height:1.32;margin:2px 0;color:var(--chalk-white);}
-  .board .line.pink{color:var(--chalk-pink);}
-  .board .line.blue{color:var(--chalk-blue);}
-  .board .menu-item{
-    display:flex;justify-content:space-between;
-    align-items:baseline;gap:8px;margin:3px 0;
-  }
-  .board .menu-item .name{font-size:20px;color:var(--chalk-blue);flex:1;}
-  .board .menu-item .price{font-size:22px;color:var(--chalk-pink);white-space:nowrap;}
-  .board .extras{font-size:19px;color:var(--chalk-green);margin-top:6px;}
-  .board .logo-row{
-    display:flex;align-items:center;justify-content:flex-end;
-    gap:10px;margin-top:16px;padding-top:8px;
-  }
-  .board .logo-text{
-    font-family:'Kalam',cursive;font-weight:700;
-    color:var(--chalk-white);font-size:18px;line-height:1.05;text-align:right;
-  }
-  .board .logo-icon{font-size:26px;}
 
-  .hint{
-    font-family:system-ui,sans-serif;font-size:12px;color:#9a8c79;
-    margin-top:8px;text-align:center;
+  .item-block {
+    border: 1px solid #eee2d0;
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    background: #fffdf8;
+  }
+  .item-block .field { margin-bottom: 10px; }
+
+  /* ===== BOTONES ===== */
+  .btn {
+    font-family: 'Kalam', cursive;
+    font-size: 16px;
+    border: none;
+    border-radius: 9px;
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: transform .08s ease, opacity .15s ease;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn-secondary { background: #f1e6d6; color: #6b5a47; }
+  .btn-primary {
+    background: #5b7a5e;
+    color: #fff;
+    width: 100%;
+    margin-top: 18px;
+    font-size: 18px;
+    padding: 13px 16px;
+  }
+  .btn-primary:hover { opacity: .92; }
+
+  /* ===== PIZARRÓN ===== */
+  .board-frame {
+    width: 100%;
+    max-width: 420px;
+    background: linear-gradient(155deg, var(--frame) 0%, var(--frame-shadow) 100%);
+    border-radius: 10px;
+    padding: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.18);
+    margin: 24px auto 0;
+  }
+  .board {
+    background: radial-gradient(ellipse at 30% 20%, rgba(255,255,255,.04), transparent 60%), var(--board);
+    border-radius: 4px;
+    padding: 22px 20px 20px;
+    position: relative;
+    font-family: 'Kalam', cursive;
+    color: var(--chalk-white);
+    overflow: hidden;
+  }
+  .board::before {
+    content: "";
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(0deg, rgba(255,255,255,.012) 0px, transparent 2px, transparent 4px);
+    pointer-events: none;
+  }
+  .board .leaf-row {
+    text-align: center;
+    font-size: 13px;
+    color: #9fb09a;
+    opacity: .55;
+    letter-spacing: 4px;
+    margin-bottom: 2px;
+  }
+  .board .fecha-line {
+    text-align: center;
+    font-size: 17px;
+    color: var(--chalk-pink);
+    margin-bottom: 2px;
+    min-height: 0;
+  }
+  .board h1.title {
+    font-family: 'Caveat', cursive;
+    font-weight: 700;
+    font-size: 50px;
+    text-align: center;
+    margin: 0 0 8px;
+    color: var(--chalk-white);
+    text-shadow: 0 0 1px rgba(255,255,255,.3);
+  }
+  .divider {
+    border: none;
+    border-top: 2px solid var(--chalk-pink);
+    opacity: .65;
+    margin: 4px 0 10px;
+  }
+  .board .section-title {
+    font-size: 23px;
+    color: var(--chalk-yellow);
+    text-align: center;
+    border: 2px solid var(--chalk-pink);
+    border-radius: 3px;
+    padding: 4px 8px;
+    margin: 12px 0 10px;
+    opacity: .95;
+    white-space: nowrap;
+  }
+  .board .line { font-size: 20px; line-height: 1.32; margin: 2px 0; color: var(--chalk-white); }
+  .board .line.pink { color: var(--chalk-pink); }
+  .board .line.blue { color: var(--chalk-blue); }
+  .board .menu-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+    margin: 3px 0;
+  }
+  .board .menu-item .name { font-size: 20px; color: var(--chalk-blue); flex: 1; }
+  .board .menu-item .price { font-size: 22px; color: var(--chalk-pink); white-space: nowrap; }
+  .board .extras { font-size: 19px; color: var(--chalk-green); margin-top: 6px; }
+  .board .logo-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 16px;
+    padding-top: 8px;
+  }
+  .board .logo-text {
+    font-family: 'Kalam', cursive;
+    font-weight: 700;
+    color: var(--chalk-white);
+    font-size: 18px;
+    line-height: 1.05;
+    text-align: right;
+  }
+  .board .logo-icon { font-size: 26px; }
+
+  .hint {
+    font-family: system-ui, sans-serif;
+    font-size: 12px;
+    color: #9a8c79;
+    margin-top: 8px;
+    text-align: center;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 480px) {
+    .board .section-title { font-size: 16px; }
+    .board h1.title { font-size: 38px; }
+    .board .line { font-size: 15px; }
+    .board .menu-item .name { font-size: 15px; }
+    .board .menu-item .price { font-size: 16px; }
+    .board .extras { font-size: 14px; }
   }
 </style>
 
+<!-- ===== ENCABEZADO ===== -->
 <h1 class="app-title">Menú del día — Sabor Casero</h1>
-<p class="app-sub">Llena los campos, descarga cada imagen por separado.</p>
+<p class="app-sub">Llena los campos y descarga cada imagen por separado.</p>
 
-<!-- TABS -->
+<!-- ===== TABS ===== -->
 <div class="tabs">
   <div class="tab active" onclick="switchTab('desayuno')">☕ Desayunos</div>
   <div class="tab" onclick="switchTab('comida')">🍽 Comidas</div>
 </div>
 
 <!-- ===== PANEL DESAYUNOS ===== -->
-<div class="row2">
+<div class="panel active" id="panel-desayuno">
+
+  <div class="row2">
     <div class="field">
       <label>Horario</label>
       <input id="horDesayuno" value="8:00 a 12:00pm" />
@@ -243,30 +289,18 @@
   <div id="desayunos-list"></div>
   <button class="btn btn-secondary" id="addDesayuno">+ Agregar paquete</button>
 
-  <div class="section-label">Extras desayuno</div>
-  <div class="field">
-    <label>Postre</label>
-    <input id="postred" value="" placeholder="flan, gelatina..." />
-  </div>
-  <div class="field">
-    <label>Agua</label>
-    <input id="aguad" value="" placeholder="jamaica, limón..." />
-  </div>
-
   <button class="btn btn-primary" id="downloadDesayuno">⬇ Descargar imagen desayunos</button>
 
   <div class="board-frame">
     <div class="board" id="boardDesayuno">
       <div class="leaf-row">~ ~ ~ ~ ~ ~ ~ ~ ~</div>
-      <div class="line pink" id="out-fechaD" style="text-align:center;font-size:17px;margin-bottom:2px;"></div>
+      <div class="fecha-line" id="out-fechaD"></div>
       <h1 class="title">Menú</h1>
-      <hr class="divider"/>
+      <hr class="divider" />
       <div class="section-title">DESAYUNOS COMPLETOS<br/><span id="out-horDesayuno">8:00 a 12:00pm</span></div>
       <div class="line pink" id="out-incluye1">Café o té</div>
       <div class="line pink" id="out-incluye2">* Jugo o fruta</div>
       <div id="out-desayunos"></div>
-      <div class="extras" id="out-postred">Postre</div>
-      <div class="extras" id="out-aguad">Agua</div>
       <div class="logo-row">
         <div class="logo-icon">🍴</div>
         <div class="logo-text">SABOR<br/>CASERO</div>
@@ -274,10 +308,13 @@
     </div>
   </div>
   <p class="hint">Esta vista previa es exactamente lo que se descarga.</p>
+
 </div>
 
 <!-- ===== PANEL COMIDAS ===== -->
-<div class="row2">
+<div class="panel" id="panel-comida">
+
+  <div class="row2">
     <div class="field">
       <label>Horario</label>
       <input id="horComida" value="2:00 a 4:00pm" />
@@ -297,7 +334,7 @@
   <div id="comidas-list"></div>
   <button class="btn btn-secondary" id="addComida">+ Agregar platillo</button>
 
-  <div class="section-label">Extras comida</div>
+  <div class="section-label">Extras</div>
   <div class="field">
     <label>Postre</label>
     <input id="postrec" value="" placeholder="flan, gelatina..." />
@@ -312,9 +349,9 @@
   <div class="board-frame">
     <div class="board" id="boardComida">
       <div class="leaf-row">~ ~ ~ ~ ~ ~ ~ ~ ~</div>
-      <div class="line pink" id="out-fechaC" style="text-align:center;font-size:17px;margin-bottom:2px;"></div>
+      <div class="fecha-line" id="out-fechaC"></div>
       <h1 class="title">Menú</h1>
-      <hr class="divider"/>
+      <hr class="divider" />
       <div class="section-title">COMIDAS COMPLETAS<br/><span id="out-horComida">2:00 a 4:00pm</span></div>
       <div class="line pink" id="out-guarniciones">Guarniciones: Espagueti, arroz, frijoles</div>
       <div id="out-comidas"></div>
@@ -327,32 +364,26 @@
     </div>
   </div>
   <p class="hint">Esta vista previa es exactamente lo que se descarga.</p>
+
 </div>
 
 <script>
-(function(){
-  // ---- TABS ----
-  window.switchTab = function(tab){
-    document.querySelectorAll('.tab').forEach((t,i) => {
-      t.classList.toggle('active', (i===0 && tab==='desayuno') || (i===1 && tab==='comida'));
+(function () {
+
+  // ===== TABS =====
+  window.switchTab = function (tab) {
+    document.querySelectorAll('.tab').forEach((t, i) => {
+      t.classList.toggle('active', (i === 0 && tab === 'desayuno') || (i === 1 && tab === 'comida'));
     });
-    document.getElementById('panel-desayuno').classList.toggle('active', tab==='desayuno');
-    document.getElementById('panel-comida').classList.toggle('active', tab==='comida');
+    document.getElementById('panel-desayuno').classList.toggle('active', tab === 'desayuno');
+    document.getElementById('panel-comida').classList.toggle('active', tab === 'comida');
   };
-  const fechaDVal = document.getElementById('fechaD').value;
-const fechaCVal = document.getElementById('fechaC').value;
 
-document.getElementById('out-fechaD').textContent = fechaDVal
-  ? new Date(fechaDVal + 'T12:00:00').toLocaleDateString('es-MX', {weekday:'long', day:'numeric', month:'long'})
-  : '';
-document.getElementById('out-fechaC').textContent = fechaCVal
-  ? new Date(fechaCVal + 'T12:00:00').toLocaleDateString('es-MX', {weekday:'long', day:'numeric', month:'long'})
-  : '';
-
+  // ===== LISTAS =====
   const desayunosList = document.getElementById('desayunos-list');
   const comidasList   = document.getElementById('comidas-list');
 
-  function makeItemRow(container, defaultName, defaultPrice){
+  function makeItemRow(container, defaultName, defaultPrice) {
     const wrap = document.createElement('div');
     wrap.className = 'item-block';
     wrap.innerHTML = `
@@ -366,27 +397,48 @@ document.getElementById('out-fechaC').textContent = fechaCVal
   }
 
   document.getElementById('addDesayuno').addEventListener('click', () => {
-    makeItemRow(desayunosList, 'Huevos al gusto o molletes', '80'); render();
+    makeItemRow(desayunosList, 'Huevos al gusto o molletes', '80');
+    render();
   });
   document.getElementById('addComida').addEventListener('click', () => {
-    makeItemRow(comidasList, 'Pollo en crema con verduras', '95'); render();
+    makeItemRow(comidasList, 'Pollo en crema con verduras', '95');
+    render();
   });
 
+  // Datos de ejemplo
   makeItemRow(desayunosList, 'Huevos al gusto o molletes', '80');
   makeItemRow(desayunosList, 'Chilaquiles con pollo o huevo', '95');
   makeItemRow(comidasList, 'Pollo en crema con verduras o queso en salsa tatemada', '95');
 
-  function render(){
+  // ===== RENDER =====
+  function formatFecha(val) {
+    if (!val) return '';
+    return new Date(val + 'T12:00:00').toLocaleDateString('es-MX', {
+      weekday: 'long', day: 'numeric', month: 'long'
+    });
+  }
+
+  function render() {
+    // Fechas
+    document.getElementById('out-fechaD').textContent = formatFecha(document.getElementById('fechaD').value);
+    document.getElementById('out-fechaC').textContent = formatFecha(document.getElementById('fechaC').value);
+
+    // Horarios
     document.getElementById('out-horDesayuno').textContent = document.getElementById('horDesayuno').value;
     document.getElementById('out-horComida').textContent   = document.getElementById('horComida').value;
-    document.getElementById('out-incluye1').textContent    = document.getElementById('incluye1').value;
-    document.getElementById('out-incluye2').textContent    = '* ' + document.getElementById('incluye2').value;
+
+    // Incluye (desayunos)
+    document.getElementById('out-incluye1').textContent = document.getElementById('incluye1').value;
+    document.getElementById('out-incluye2').textContent = '* ' + document.getElementById('incluye2').value;
+
+    // Guarniciones (comidas)
     document.getElementById('out-guarniciones').textContent = 'Guarniciones: ' + document.getElementById('guarniciones').value;
 
+    // Paquetes de desayuno
     const outD = document.getElementById('out-desayunos');
     outD.innerHTML = '';
     desayunosList.querySelectorAll('.item-block').forEach(block => {
-      const name = block.querySelector('.item-name').value;
+      const name  = block.querySelector('.item-name').value;
       const price = block.querySelector('.item-price').value;
       const row = document.createElement('div');
       row.className = 'menu-item';
@@ -394,10 +446,11 @@ document.getElementById('out-fechaC').textContent = fechaCVal
       outD.appendChild(row);
     });
 
+    // Platillos de comida
     const outC = document.getElementById('out-comidas');
     outC.innerHTML = '';
     comidasList.querySelectorAll('.item-block').forEach(block => {
-      const name = block.querySelector('.item-name').value;
+      const name  = block.querySelector('.item-name').value;
       const price = block.querySelector('.item-price').value;
       const row = document.createElement('div');
       row.className = 'menu-item';
@@ -405,30 +458,26 @@ document.getElementById('out-fechaC').textContent = fechaCVal
       outC.appendChild(row);
     });
 
-    const pd = document.getElementById('postred').value.trim();
-    const ad = document.getElementById('aguad').value.trim();
-    document.getElementById('out-postred').textContent = 'Postre' + (pd ? ': ' + pd : '');
-    document.getElementById('out-aguad').textContent   = 'Agua'   + (ad ? ': ' + ad : '');
-
+    // Extras comida
     const pc = document.getElementById('postrec').value.trim();
     const ac = document.getElementById('aguac').value.trim();
     document.getElementById('out-postrec').textContent = 'Postre' + (pc ? ': ' + pc : '');
     document.getElementById('out-aguac').textContent   = 'Agua'   + (ac ? ': ' + ac : '');
   }
 
-  // ---- DESCARGA ----
-  async function descargar(boardId, filename){
+  // ===== DESCARGA =====
+  async function descargar(boardId, filename) {
     const original = document.getElementById(boardId);
     const clone = original.cloneNode(true);
-    clone.style.width = '400px';
+    clone.style.width    = '400px';
     clone.style.position = 'fixed';
-    clone.style.top = '-9999px';
-    clone.style.left = '0';
+    clone.style.top      = '-9999px';
+    clone.style.left     = '0';
     document.body.appendChild(clone);
-    const canvas = await html2canvas(clone, {scale:3, backgroundColor:'#23302c', width:400});
+    const canvas = await html2canvas(clone, { scale: 3, backgroundColor: '#23302c', width: 400 });
     document.body.removeChild(clone);
     const link = document.createElement('a');
-    const today = new Date().toISOString().slice(0,10);
+    const today = new Date().toISOString().slice(0, 10);
     link.download = `${filename}-${today}.png`;
     link.href = canvas.toDataURL('image/png');
     link.click();
@@ -437,56 +486,56 @@ document.getElementById('out-fechaC').textContent = fechaCVal
   document.getElementById('downloadDesayuno').addEventListener('click', () => descargar('boardDesayuno', 'desayunos-sabor-casero'));
   document.getElementById('downloadComida').addEventListener('click',   () => descargar('boardComida',   'comidas-sabor-casero'));
 
-  // ---- GUARDAR Y CARGAR ----
-  function guardar(){
+  // ===== GUARDAR =====
+  function guardar() {
     const datos = {
-      fechaD: document.getElementById('fechaD').value,
-fechaC: document.getElementById('fechaC').value,
-      horDesayuno: document.getElementById('horDesayuno').value,
-      horComida:   document.getElementById('horComida').value,
-      incluye1:    document.getElementById('incluye1').value,
-      incluye2:    document.getElementById('incluye2').value,
-      guarniciones:document.getElementById('guarniciones').value,
-      postred: document.getElementById('postred').value,
-      aguad:   document.getElementById('aguad').value,
-      postrec: document.getElementById('postrec').value,
-      aguac:   document.getElementById('aguac').value,
-      desayunos:[], comidas:[]
+      fechaD:       document.getElementById('fechaD').value,
+      fechaC:       document.getElementById('fechaC').value,
+      horDesayuno:  document.getElementById('horDesayuno').value,
+      horComida:    document.getElementById('horComida').value,
+      incluye1:     document.getElementById('incluye1').value,
+      incluye2:     document.getElementById('incluye2').value,
+      guarniciones: document.getElementById('guarniciones').value,
+      postrec:      document.getElementById('postrec').value,
+      aguac:        document.getElementById('aguac').value,
+      desayunos: [],
+      comidas:   []
     };
     desayunosList.querySelectorAll('.item-block').forEach(b => {
-      datos.desayunos.push({name:b.querySelector('.item-name').value, price:b.querySelector('.item-price').value});
+      datos.desayunos.push({ name: b.querySelector('.item-name').value, price: b.querySelector('.item-price').value });
     });
     comidasList.querySelectorAll('.item-block').forEach(b => {
-      datos.comidas.push({name:b.querySelector('.item-name').value, price:b.querySelector('.item-price').value});
+      datos.comidas.push({ name: b.querySelector('.item-name').value, price: b.querySelector('.item-price').value });
     });
     localStorage.setItem('menuSaborCasero', JSON.stringify(datos));
   }
 
-  function cargar(){
-    document.getElementById('fechaD').value = d.fechaD || '';
-document.getElementById('fechaC').value = d.fechaC || '';
+  // ===== CARGAR =====
+  function cargar() {
     const raw = localStorage.getItem('menuSaborCasero');
-    if(!raw) return;
+    if (!raw) return;
     const d = JSON.parse(raw);
+    document.getElementById('fechaD').value       = d.fechaD       || '';
+    document.getElementById('fechaC').value       = d.fechaC       || '';
     document.getElementById('horDesayuno').value  = d.horDesayuno  || '';
     document.getElementById('horComida').value    = d.horComida    || '';
     document.getElementById('incluye1').value     = d.incluye1     || '';
     document.getElementById('incluye2').value     = d.incluye2     || '';
     document.getElementById('guarniciones').value = d.guarniciones || '';
-    document.getElementById('postred').value = d.postred || '';
-    document.getElementById('aguad').value   = d.aguad   || '';
-    document.getElementById('postrec').value = d.postrec || '';
-    document.getElementById('aguac').value   = d.aguac   || '';
+    document.getElementById('postrec').value      = d.postrec      || '';
+    document.getElementById('aguac').value        = d.aguac        || '';
     desayunosList.innerHTML = '';
-    (d.desayunos||[]).forEach(x => makeItemRow(desayunosList, x.name, x.price));
+    (d.desayunos || []).forEach(x => makeItemRow(desayunosList, x.name, x.price));
     comidasList.innerHTML = '';
-    (d.comidas||[]).forEach(x => makeItemRow(comidasList, x.name, x.price));
+    (d.comidas || []).forEach(x => makeItemRow(comidasList, x.name, x.price));
   }
 
-  document.addEventListener('input',  () => { render(); guardar(); });
-  document.addEventListener('click',  () => { setTimeout(()=>{ guardar(); }, 100); });
+  // ===== EVENTOS =====
+  document.addEventListener('input', () => { render(); guardar(); });
+  document.addEventListener('click', () => { setTimeout(guardar, 100); });
 
   cargar();
   render();
+
 })();
 </script>
