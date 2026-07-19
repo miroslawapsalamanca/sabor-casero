@@ -224,11 +224,14 @@
 </div>
 
 <!-- ===== PANEL DESAYUNOS ===== -->
-<div class="panel active" id="panel-desayuno">
-  <div class="row2">
+<div class="row2">
     <div class="field">
       <label>Horario</label>
       <input id="horDesayuno" value="8:00 a 12:00pm" />
+    </div>
+    <div class="field">
+      <label>Fecha</label>
+      <input id="fechaD" type="date" />
     </div>
   </div>
 
@@ -255,6 +258,7 @@
   <div class="board-frame">
     <div class="board" id="boardDesayuno">
       <div class="leaf-row">~ ~ ~ ~ ~ ~ ~ ~ ~</div>
+      <div class="line pink" id="out-fechaD" style="text-align:center;font-size:17px;margin-bottom:2px;"></div>
       <h1 class="title">Menú</h1>
       <hr class="divider"/>
       <div class="section-title">DESAYUNOS COMPLETOS<br/><span id="out-horDesayuno">8:00 a 12:00pm</span></div>
@@ -273,10 +277,15 @@
 </div>
 
 <!-- ===== PANEL COMIDAS ===== -->
-<div class="panel" id="panel-comida">
-  <div class="field">
-    <label>Horario</label>
-    <input id="horComida" value="2:00 a 4:00pm" />
+<div class="row2">
+    <div class="field">
+      <label>Horario</label>
+      <input id="horComida" value="2:00 a 4:00pm" />
+    </div>
+    <div class="field">
+      <label>Fecha</label>
+      <input id="fechaC" type="date" />
+    </div>
   </div>
 
   <div class="section-label">Guarniciones</div>
@@ -303,6 +312,7 @@
   <div class="board-frame">
     <div class="board" id="boardComida">
       <div class="leaf-row">~ ~ ~ ~ ~ ~ ~ ~ ~</div>
+      <div class="line pink" id="out-fechaC" style="text-align:center;font-size:17px;margin-bottom:2px;"></div>
       <h1 class="title">Menú</h1>
       <hr class="divider"/>
       <div class="section-title">COMIDAS COMPLETAS<br/><span id="out-horComida">2:00 a 4:00pm</span></div>
@@ -329,6 +339,15 @@
     document.getElementById('panel-desayuno').classList.toggle('active', tab==='desayuno');
     document.getElementById('panel-comida').classList.toggle('active', tab==='comida');
   };
+  const fechaDVal = document.getElementById('fechaD').value;
+const fechaCVal = document.getElementById('fechaC').value;
+
+document.getElementById('out-fechaD').textContent = fechaDVal
+  ? new Date(fechaDVal + 'T12:00:00').toLocaleDateString('es-MX', {weekday:'long', day:'numeric', month:'long'})
+  : '';
+document.getElementById('out-fechaC').textContent = fechaCVal
+  ? new Date(fechaCVal + 'T12:00:00').toLocaleDateString('es-MX', {weekday:'long', day:'numeric', month:'long'})
+  : '';
 
   const desayunosList = document.getElementById('desayunos-list');
   const comidasList   = document.getElementById('comidas-list');
@@ -421,6 +440,8 @@
   // ---- GUARDAR Y CARGAR ----
   function guardar(){
     const datos = {
+      fechaD: document.getElementById('fechaD').value,
+fechaC: document.getElementById('fechaC').value,
       horDesayuno: document.getElementById('horDesayuno').value,
       horComida:   document.getElementById('horComida').value,
       incluye1:    document.getElementById('incluye1').value,
@@ -442,6 +463,8 @@
   }
 
   function cargar(){
+    document.getElementById('fechaD').value = d.fechaD || '';
+document.getElementById('fechaC').value = d.fechaC || '';
     const raw = localStorage.getItem('menuSaborCasero');
     if(!raw) return;
     const d = JSON.parse(raw);
