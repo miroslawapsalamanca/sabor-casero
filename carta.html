@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menú — Sabor Casero</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #f5ede0;
+      font-family: 'Lato', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      width: 100%;
+      background: #3b2a1a;
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    header .logo-icon { font-size: 26px; }
+    header h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: #f5ede0;
+      letter-spacing: 3px;
+    }
+
+    .lang-tabs {
+      display: flex;
+      gap: 0;
+      margin: 24px 0 0;
+      border: 2px solid #c4a882;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .lang-tab {
+      padding: 10px 32px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      background: #fffaf2;
+      color: #8a6a4a;
+      cursor: pointer;
+      border: none;
+      transition: background .2s, color .2s;
+    }
+    .lang-tab.active {
+      background: #3b2a1a;
+      color: #f5ede0;
+    }
+    .lang-tab:first-child { border-right: 2px solid #c4a882; }
+
+    .subtitle {
+      font-size: 13px;
+      color: #9a7a5a;
+      letter-spacing: 1px;
+      margin: 10px 0 18px;
+    }
+
+    .pdf-wrap {
+      width: 100%;
+      max-width: 860px;
+      padding: 0 16px 32px;
+      display: none;
+    }
+    .pdf-wrap.active { display: block; }
+
+    iframe {
+      width: 100%;
+      height: 85vh;
+      min-height: 600px;
+      border: none;
+      border-radius: 10px;
+      box-shadow: 0 8px 30px rgba(0,0,0,.15);
+      background: #fff;
+    }
+
+    footer {
+      width: 100%;
+      text-align: center;
+      padding: 16px;
+      font-size: 12px;
+      color: #b0916a;
+      letter-spacing: 1px;
+      margin-top: auto;
+    }
+
+    @media (max-width: 480px) {
+      header h1 { font-size: 20px; }
+      .lang-tab { padding: 10px 20px; font-size: 15px; }
+      iframe { height: 78vh; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo-icon">🍴</div>
+  <h1>SABOR CASERO</h1>
+</header>
+
+<div class="lang-tabs">
+  <button class="lang-tab active" onclick="switchLang('es')">🇲🇽 Español</button>
+  <button class="lang-tab" onclick="switchLang('en')">🇺🇸 English</button>
+</div>
+<p class="subtitle" id="subtitle">Menú completo</p>
+
+<div class="pdf-wrap active" id="wrap-es">
+  <iframe
+    src="https://drive.google.com/file/d/1AGKqJ7_g7f5bGI6eW7BFlXbY0MAb-5A9/preview"
+    allow="autoplay"
+    title="Menú Sabor Casero — Español">
+  </iframe>
+</div>
+
+<div class="pdf-wrap" id="wrap-en">
+  <iframe
+    src="https://drive.google.com/file/d/1WV3KZWbZ4oxuC63XMO3XxXtQv2YgN_JA/preview"
+    allow="autoplay"
+    title="Menu Sabor Casero — English">
+  </iframe>
+</div>
+
+<footer>✦ SABOR CASERO ✦</footer>
+
+<script>
+  function switchLang(lang) {
+    document.querySelectorAll('.lang-tab').forEach((t, i) => {
+      t.classList.toggle('active', (i === 0 && lang === 'es') || (i === 1 && lang === 'en'));
+    });
+    document.getElementById('wrap-es').classList.toggle('active', lang === 'es');
+    document.getElementById('wrap-en').classList.toggle('active', lang === 'en');
+    document.getElementById('subtitle').textContent = lang === 'es' ? 'Menú completo' : 'Full menu';
+  }
+</script>
+</body>
+</html>
